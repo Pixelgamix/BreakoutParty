@@ -124,6 +124,10 @@ namespace BreakoutParty.Entities
             FarseerPhysics.Dynamics.Fixture fixtureB,
             FarseerPhysics.Dynamics.Contacts.Contact contact)
         {
+            // TODO: Entities should not really know about Gamestates, should they? :-S
+            var state = Playground.State as Gamestates.BreakoutState;
+            state.Score++;
+
             PhysicsBody.CollisionCategories = CollisionGroups.None;
             PhysicsBody.IgnoreGravity = false;
             return true;

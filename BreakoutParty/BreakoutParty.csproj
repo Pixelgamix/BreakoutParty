@@ -58,6 +58,12 @@
     <Compile Include="Entities\Paddle.cs" />
     <Compile Include="Entities\Entity.cs" />
     <Compile Include="Entities\Playground.cs" />
+    <Compile Include="Font\BitmapFont.cs" />
+    <Compile Include="Font\BitmapFontLoader.cs" />
+    <Compile Include="Font\Character.cs" />
+    <Compile Include="Font\Kerning.cs" />
+    <Compile Include="Font\Padding.cs" />
+    <Compile Include="Font\Page.cs" />
     <Compile Include="Gamestates\BreakoutState.cs" />
     <Compile Include="Gamestates\Gamestate.cs" />
     <Compile Include="Gamestates\GamestateManager.cs" />
@@ -68,6 +74,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="Content\Font.fnt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="FNA.dll.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -84,10 +93,14 @@
     <Content Include="Content\Block.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Font.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Paddle.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

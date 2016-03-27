@@ -1,4 +1,5 @@
 ﻿using BreakoutParty.Entities;
+using BreakoutParty.Font;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -15,6 +16,21 @@ namespace BreakoutParty.Gamestates
     sealed class BreakoutState : Gamestate
     {
         /// <summary>
+        /// Font for displaying status information.
+        /// </summary>
+        private BitmapFont _Statsfont;
+
+        /// <summary>
+        /// Score.
+        /// </summary>
+        public int Score = 0;
+
+        /// <summary>
+        /// Position of score display.
+        /// </summary>
+        private static Vector2 _ScorePosition = new Vector2(245, 1);
+
+        /// <summary>
         /// The <see cref="_Playground"/>.
         /// </summary>
         private Playground _Playground;
@@ -25,11 +41,20 @@ namespace BreakoutParty.Gamestates
         private List<Ball> _Balls = new List<Ball>();
 
         /// <summary>
+        /// The <see cref="SpriteBatch"/> for drawing.
+        /// </summary>
+        private SpriteBatch _Batch;
+
+        /// <summary>
         /// Initializes the <see cref="Gamestate"/>.
         /// </summary>
         public override void Initialize()
         {
             _Playground = new Playground(this);
+
+            _Statsfont = Manager.Game.Content.LoadBitmapFont("Font");
+
+            _Batch = Manager.Game.Batch;
 
             SpawnBall();
             SpawnPaddles();
@@ -63,13 +88,21 @@ namespace BreakoutParty.Gamestates
         /// <returns><c>True</c>, if the next gamestate may draw too.</returns>
         public override bool Draw(GameTime gameTime)
         {
-            Manager.Game.Batch.Begin(SpriteSortMode.Texture,
+            _Batch.Begin(SpriteSortMode.Texture,
                 BlendState.NonPremultiplied,
                 SamplerState.PointClamp,
                 DepthStencilState.None,
                 RasterizerState.CullNone);
+
             _Playground.Draw(gameTime);
-            Manager.Game.Batch.End();
+
+            // Draw status
+            _Batch.DrawString(_Statsfont,
+                Score.ToString().PadLeft(6, '0') + " Score",
+                _ScorePosition,
+                Color.White);
+
+            _Batch.End();
             return false;
         }
 
