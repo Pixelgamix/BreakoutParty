@@ -14,6 +14,11 @@ namespace BreakoutParty.Entities
     sealed class Ball : Entity
     {
         /// <summary>
+        /// The ball's speed in m/s.
+        /// </summary>
+        public float Speed = 2.5f;
+
+        /// <summary>
         /// Ball texture.
         /// </summary>
         private Texture2D _BallTexture;
@@ -27,7 +32,7 @@ namespace BreakoutParty.Entities
         /// The <see cref="SpriteBatch"/> to draw with.
         /// </summary>
         private SpriteBatch _Batch;
-        
+
         /// <summary>
         /// Initializes the <see cref="Entity"/>. Is called once the entity
         /// has been added to a <see cref="Playground"/> and after the 
@@ -77,19 +82,32 @@ namespace BreakoutParty.Entities
         /// <param name="gameTime">Timing information.</param>
         public override void Update(GameTime gameTime)
         {
-            // Minimum speed is 1.2 m/s
+            // Ensure ball has designated speed
+            float speed = PhysicsBody.LinearVelocity.LengthSquared();
             Vector2 velocity = PhysicsBody.LinearVelocity;
-            if (velocity.LengthSquared() < 1f)
+
+            // If the ball is standing still (e.g. has no direction),
+            // then give it a random direction to make it move again.
+            if (speed <= float.Epsilon)
             {
-                velocity.Normalize();
-                PhysicsBody.LinearVelocity = velocity * 1.2f;
+                velocity = new Vector2(
+                    (float)BreakoutPartyGame.Random.NextDouble() - 0.5f,
+                    (float)BreakoutPartyGame.Random.NextDouble() - 0.5f);
             }
             else
             {
-                velocity.Normalize();
-                velocity *= 0.1f * (float)gameTime.ElapsedGameTime.TotalSeconds;
-                PhysicsBody.ApplyForce(velocity);
+                // Add a bit of randomness to the balls direction to prevent
+                // it from getting locked into a direction that cannot be
+                // changed by the player (e.g. ball goes straight from wall
+                // to wall).
+                velocity.X += (float)BreakoutPartyGame.Random.NextDouble() * 0.001f - 0.00025f;
+                velocity.Y += (float)BreakoutPartyGame.Random.NextDouble() * 0.001f - 0.00025f;
             }
+
+            velocity.Normalize();
+            velocity *= Speed;
+            PhysicsBody.LinearVelocity = velocity;
+
         }
 
         /// <summary>

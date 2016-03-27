@@ -15,11 +15,6 @@ namespace BreakoutParty.Gamestates
     sealed class BreakoutState : Gamestate
     {
         /// <summary>
-        /// The <see cref="Random"/> number generator.
-        /// </summary>
-        private Random _Random = new Random();
-
-        /// <summary>
         /// The <see cref="_Playground"/>.
         /// </summary>
         private Playground _Playground;
@@ -91,7 +86,7 @@ namespace BreakoutParty.Gamestates
                 0f);
 
             Vector2 velocity =  new Vector2(
-                (float)_Random.NextDouble() - 0.5f,
+                (float)BreakoutPartyGame.Random.NextDouble() - 0.5f,
                 -0.8f);
             velocity.Normalize();
             ball.PhysicsBody.LinearVelocity = velocity * 2.5f;
@@ -158,9 +153,9 @@ namespace BreakoutParty.Gamestates
                         (80 + x * 32f) * BreakoutPartyGame.MeterPerPixel,
                         (87 + y * 12f) * BreakoutPartyGame.MeterPerPixel);
                     block.Tint = new Color(
-                        _Random.Next(150, 255),
-                        _Random.Next(150, 255),
-                        _Random.Next(150, 255));
+                        BreakoutPartyGame.Random.Next(150, 255),
+                        BreakoutPartyGame.Random.Next(150, 255),
+                        BreakoutPartyGame.Random.Next(150, 255));
                 }
             }
         }

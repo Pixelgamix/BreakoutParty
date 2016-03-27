@@ -141,6 +141,12 @@ namespace BreakoutParty.Entities
         /// </summary>
         private void HandleComputer()
         {
+            // If we have a collision with a ball, there is no need
+            // to move. This allows the ball to bounce off the paddle
+            // instead of sticking / sliding along to it.
+            if (PhysicsBody.ContactList != null)
+                return;
+
             Vector2 closestBall = PhysicsBody.Position;
             float closestDistance = float.MaxValue;
             foreach(Ball ball in Playground.GetEntities<Ball>())

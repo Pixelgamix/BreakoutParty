@@ -26,6 +26,11 @@ namespace BreakoutParty
         public const float MeterPerPixel = 1f / PixelsPerMeter;
 
         /// <summary>
+        /// Random number generator.
+        /// </summary>
+        public static Random Random = new Random();
+
+        /// <summary>
         /// The <see cref="SpriteBatch"/> used for drawing the game.
         /// </summary>
         public SpriteBatch Batch;
