@@ -67,6 +67,7 @@
     <Compile Include="Gamestates\BreakoutState.cs" />
     <Compile Include="Gamestates\Gamestate.cs" />
     <Compile Include="Gamestates\GamestateManager.cs" />
+    <Compile Include="Gamestates\MainMenuGamestate.cs" />
     <Compile Include="InputActions.cs" />
     <Compile Include="InputManager.cs" />
     <Compile Include="Program.cs" />
@@ -97,6 +98,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Paddle.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Title.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

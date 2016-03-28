@@ -75,7 +75,7 @@ namespace BreakoutParty
 
             Batch = new SpriteBatch(Graphics.GraphicsDevice);
             GameManager = new GamestateManager(this);
-            GameManager.Add(new BreakoutState());
+            GameManager.Add(new MainMenuGamestate());
         }
 
         /// <summary>
@@ -109,6 +109,10 @@ namespace BreakoutParty
             InputManager.Update();
 
             GameManager.Update(gameTime);
+
+            // Exit the game when there is no active gamestate left
+            if (GameManager.IsEmpty)
+                Exit();
         }
 
         /// <summary>

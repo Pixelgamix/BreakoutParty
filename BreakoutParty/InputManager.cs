@@ -86,9 +86,22 @@ namespace BreakoutParty
         /// </summary>
         /// <param name="player">The player.</param>
         /// <param name="action">The action.</param>
+        /// <returns><c>True</c>, when the action is active.</returns>
         public static bool IsActionActive(PlayerIndex player, InputActions action)
         {
             return _CurrentInput[(int)player, (int)action];
+        }
+
+        /// <summary>
+        /// Checks, if the specified <see cref="InputActions"/> is just pressed.
+        /// </summary>
+        /// <param name="player">The player.</param>
+        /// <param name="action">The action.</param>
+        /// <returns><c>True</c>, when the action is just pressed.</returns>
+        public static bool IsActionPressed(PlayerIndex player, InputActions action)
+        {
+            return _CurrentInput[(int)player, (int)action]
+                && !_PreviousInput[(int)player, (int)action];
         }
     }
 }
