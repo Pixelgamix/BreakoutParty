@@ -65,6 +65,7 @@
     <Compile Include="Font\Padding.cs" />
     <Compile Include="Font\Page.cs" />
     <Compile Include="Gamestates\BreakoutState.cs" />
+    <Compile Include="Gamestates\CreditsState.cs" />
     <Compile Include="Gamestates\Gamestate.cs" />
     <Compile Include="Gamestates\GamestateManager.cs" />
     <Compile Include="Gamestates\MainMenuGamestate.cs" />
@@ -76,6 +77,9 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="Content\Font.fnt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Content\TitleFont.fnt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="FNA.dll.config">
@@ -94,6 +98,9 @@
     <Content Include="Content\Block.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Credits.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Font.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -101,6 +108,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Title.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\TitleFont.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

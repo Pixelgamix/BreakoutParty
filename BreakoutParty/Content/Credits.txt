@@ -1,0 +1,12 @@
+﻿[BreakoutParty]
+
+A Game By PixelGamix
+Pascal "ShyRed" Richter
+Michael "Avoider" Jaensch
+
+[Graphics]
+Pascal Richter
+
+[3rd Party Libraries]
+Farseer Physics Engine by Ian "genbox" Qvist
+FNA by Ethan "flibitijibibo" Lee

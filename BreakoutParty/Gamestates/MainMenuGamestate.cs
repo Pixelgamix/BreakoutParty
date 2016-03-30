@@ -89,7 +89,8 @@ namespace BreakoutParty.Gamestates
                         break;
 
                     case 1: // Credits
-                        // TODO: Go to credits
+                        Manager.Remove(this);
+                        Manager.Add(new CreditsState());
                         break;
 
                     case 2: // Exit
