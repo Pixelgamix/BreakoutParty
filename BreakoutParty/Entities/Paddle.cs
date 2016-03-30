@@ -99,6 +99,22 @@ namespace BreakoutParty.Entities
                 HandleComputer();
             else
                 HandleUserInput();
+
+            // Make sure that the paddle stays within bounds
+            if(Player == PlayerIndex.One || Player == PlayerIndex.Two)
+            {
+                if (PhysicsBody.Position.X < 16 * BreakoutPartyGame.MeterPerPixel)
+                    PhysicsBody.LinearVelocity = new Vector2(PaddleSpeed, 0);
+                else if (PhysicsBody.Position.X > (320 - 16) * BreakoutPartyGame.MeterPerPixel)
+                    PhysicsBody.LinearVelocity = new Vector2(-PaddleSpeed, 0);
+            }
+            else
+            {
+                if (PhysicsBody.Position.Y < 16 * BreakoutPartyGame.MeterPerPixel)
+                    PhysicsBody.LinearVelocity = new Vector2(0, PaddleSpeed);
+                else if (PhysicsBody.Position.Y > (240 - 16) * BreakoutPartyGame.MeterPerPixel)
+                    PhysicsBody.LinearVelocity = new Vector2(0, -PaddleSpeed);
+            }
         }
 
         /// <summary>
