@@ -180,15 +180,11 @@ namespace BreakoutParty.Gamestates
             {
                 for(int y = 0; y < 5; y++)
                 {
-                    Block block = new Block();
+                    Block block = new Block(BreakoutPartyGame.Random.Next(1, 4));
                     _Playground.Add(block);
                     block.PhysicsBody.Position = new Vector2(
-                        (80 + x * 32f) * BreakoutPartyGame.MeterPerPixel,
-                        (87 + y * 12f) * BreakoutPartyGame.MeterPerPixel);
-                    block.Tint = new Color(
-                        BreakoutPartyGame.Random.Next(150, 255),
-                        BreakoutPartyGame.Random.Next(150, 255),
-                        BreakoutPartyGame.Random.Next(150, 255));
+                        (80 + x * Block.Width) * BreakoutPartyGame.MeterPerPixel,
+                        (87 + y * Block.Height) * BreakoutPartyGame.MeterPerPixel);
                 }
             }
         }

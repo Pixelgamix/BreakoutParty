@@ -14,9 +14,43 @@ namespace BreakoutParty.Entities
     sealed class Block : Entity
     {
         /// <summary>
+        /// Width in pixels.
+        /// </summary>
+        public const int Width = 32;
+
+        /// <summary>
+        /// Height in pixels.
+        /// </summary>
+        public const int Height = 12;
+
+        /// <summary>
         /// The block's tint.
         /// </summary>
         public Color Tint = Color.White;
+
+        /// <summary>
+        /// Block maximum health.
+        /// </summary>
+        public int MaxHealth;
+
+        /// <summary>
+        /// Block current health.
+        /// </summary>
+        public int Health;
+
+        /// <summary>
+        /// Colors to randomly choose the tint from.
+        /// </summary>
+        private static Color[] Colors = {
+            Color.Orange,
+            Color.LawnGreen,
+            Color.LightBlue,
+            Color.Yellow,
+            Color.MediumPurple,
+            Color.Gold,
+            Color.Pink,
+            Color.White
+        };
 
         /// <summary>
         /// Block texture.
@@ -34,6 +68,18 @@ namespace BreakoutParty.Entities
         private SpriteBatch _Batch;
 
         /// <summary>
+        /// Creates a new <see cref="Block"/>.
+        /// </summary>
+        /// <param name="health">The health the block starts with.</param>
+        public Block(int health)
+        {
+            MaxHealth = health;
+            Health = health;
+
+            Tint = Colors[BreakoutPartyGame.Random.Next(Colors.Length)];
+        }
+
+        /// <summary>
         /// Initializes the <see cref="Entity"/>. Is called once the entity
         /// has been added to a <see cref="Playground"/> and after the 
         /// <see cref="Entity.Playground"/> field has been set.
@@ -46,12 +92,12 @@ namespace BreakoutParty.Entities
 
             _BlockTexture = game.Content.Load<Texture2D>("Block");
 
-            _Origin = new Vector2(_BlockTexture.Width * 0.5f, _BlockTexture.Height * 0.5f);
+            _Origin = new Vector2(Width * 0.5f, Height * 0.5f);
 
             PhysicsBody = FarseerPhysics.Factories.BodyFactory.CreateRectangle(
                 Playground.World,
-                _BlockTexture.Width * BreakoutPartyGame.MeterPerPixel,
-                _BlockTexture.Height * BreakoutPartyGame.MeterPerPixel,
+                Width * BreakoutPartyGame.MeterPerPixel,
+                Height * BreakoutPartyGame.MeterPerPixel,
                 1f,
                 Vector2.Zero,
                 0f,
@@ -89,6 +135,13 @@ namespace BreakoutParty.Entities
                 || PhysicsBody.Position.Y > 240 * BreakoutPartyGame.MeterPerPixel
                 || PhysicsBody.Position.Y < 0)
                 Playground.Remove(this);
+
+            // Block cannot be moved as long as it has health left
+            if (Health > 0)
+            {
+                PhysicsBody.LinearVelocity = Vector2.Zero;
+                PhysicsBody.AngularVelocity = 0;
+            }
         }
 
         /// <summary>
@@ -101,10 +154,16 @@ namespace BreakoutParty.Entities
                 Color.Transparent,
                 PhysicsBody.LinearVelocity.LengthSquared() * 0.1f);
 
+            Rectangle sourceRect = new Rectangle(
+                0,
+                Height * (int)(3f - Health / (float)MaxHealth * 3f),
+                Width,
+                Height);
+
             _Batch.Draw(
                 _BlockTexture,
                 PhysicsBody.Position * BreakoutPartyGame.PixelsPerMeter,
-                null,
+                sourceRect,
                 color,
                 PhysicsBody.Rotation,
                 _Origin,
@@ -124,12 +183,23 @@ namespace BreakoutParty.Entities
             FarseerPhysics.Dynamics.Fixture fixtureB,
             FarseerPhysics.Dynamics.Contacts.Contact contact)
         {
-            // TODO: Entities should not really know about Gamestates, should they? :-S
-            var state = Playground.State as Gamestates.BreakoutState;
-            state.Score++;
+            if (Health > 0)
+            {
+                Health--;
+            }
+            if (Health == 0)
+            {
+                var state = Playground.State as Gamestates.BreakoutState;
+                state.Score++;
 
-            PhysicsBody.CollisionCategories = CollisionGroups.None;
-            PhysicsBody.IgnoreGravity = false;
+                // Random chance of spawning a ball
+                if (BreakoutPartyGame.Random.NextDouble() > 0.9)
+                    state.SpawnBall();
+
+                PhysicsBody.CollisionCategories = CollisionGroups.None;
+                PhysicsBody.IgnoreGravity = false;
+            }
+
             return true;
         }
     }
