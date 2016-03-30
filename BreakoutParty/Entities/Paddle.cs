@@ -62,9 +62,9 @@ namespace BreakoutParty.Entities
                 Playground.World,
                 _PaddleTexture.Width * BreakoutPartyGame.MeterPerPixel,
                 _PaddleTexture.Height * BreakoutPartyGame.MeterPerPixel,
-                2 * BreakoutPartyGame.MeterPerPixel,
-                2 * BreakoutPartyGame.MeterPerPixel,
-                3,
+                12 * BreakoutPartyGame.MeterPerPixel,
+                3 * BreakoutPartyGame.MeterPerPixel,
+                6,
                 1f,
                 Vector2.Zero,
                 0f,
@@ -96,12 +96,12 @@ namespace BreakoutParty.Entities
         public override void Update(GameTime gameTime)
         {
             if (IsComputer)
-                HandleComputer();
+                HandleComputer(gameTime);
             else
                 HandleUserInput();
 
             // Make sure that the paddle stays within bounds
-            if(Player == PlayerIndex.One || Player == PlayerIndex.Two)
+            if (Player == PlayerIndex.One || Player == PlayerIndex.Two)
             {
                 if (PhysicsBody.Position.X < 16 * BreakoutPartyGame.MeterPerPixel)
                     PhysicsBody.LinearVelocity = new Vector2(PaddleSpeed, 0);
@@ -110,7 +110,7 @@ namespace BreakoutParty.Entities
             }
             else
             {
-                if (PhysicsBody.Position.Y < 16 * BreakoutPartyGame.MeterPerPixel)
+                if (PhysicsBody.Position.Y < 32 * BreakoutPartyGame.MeterPerPixel)
                     PhysicsBody.LinearVelocity = new Vector2(0, PaddleSpeed);
                 else if (PhysicsBody.Position.Y > (240 - 16) * BreakoutPartyGame.MeterPerPixel)
                     PhysicsBody.LinearVelocity = new Vector2(0, -PaddleSpeed);
@@ -155,41 +155,37 @@ namespace BreakoutParty.Entities
         /// <summary>
         /// Handles computer input.
         /// </summary>
-        private void HandleComputer()
+        private void HandleComputer(GameTime gameTime)
         {
-            // If we have a collision with a ball, there is no need
-            // to move. This allows the ball to bounce off the paddle
-            // instead of sticking / sliding along to it.
-            if (PhysicsBody.ContactList != null)
-                return;
-
-            Vector2 closestBall = PhysicsBody.Position;
+            Vector2 closestBall = Vector2.Zero;
             float closestDistance = float.MaxValue;
-            foreach(Ball ball in Playground.GetEntities<Ball>())
+            foreach (Ball ball in Playground.GetEntities<Ball>())
             {
-                Vector2 otherpos = ball.PhysicsBody.Position + ball.PhysicsBody.LinearVelocity;
+                Vector2 otherpos = ball.PhysicsBody.Position + ball.PhysicsBody.LinearVelocity * (float)gameTime.ElapsedGameTime.TotalSeconds;
                 float distance = Vector2.DistanceSquared(PhysicsBody.Position, otherpos);
                 if (closestBall == null
-                    || distance < closestDistance) 
+                    || distance < closestDistance)
                 {
                     closestBall = otherpos;
                     closestDistance = distance;
                 }
             }
 
-            if(closestBall != null)
+            if (closestDistance != float.MaxValue)
             {
                 // Move paddle towards ball
                 Vector2 velocity = Vector2.Zero;
-                if(Player == PlayerIndex.One || Player == PlayerIndex.Two)
+                if (Player == PlayerIndex.One || Player == PlayerIndex.Two)
                 {
-                    float xd =  closestBall.X - PhysicsBody.Position.X;
-                    velocity.X = MathHelper.Clamp(xd, -PaddleSpeed, PaddleSpeed);
+                    float xd = closestBall.X - PhysicsBody.Position.X;
+                    if (Math.Abs(xd) > 8f * BreakoutPartyGame.MeterPerPixel)
+                        velocity.X = xd < 0 ? -PaddleSpeed : PaddleSpeed;
                 }
                 else
                 {
                     float yd = closestBall.Y - PhysicsBody.Position.Y;
-                    velocity.Y = MathHelper.Clamp(yd, -PaddleSpeed, PaddleSpeed);
+                    if (Math.Abs(yd) > 8f * BreakoutPartyGame.MeterPerPixel)
+                        velocity.Y = yd < 0 ? -PaddleSpeed : PaddleSpeed;
                 }
                 PhysicsBody.LinearVelocity = velocity;
             }

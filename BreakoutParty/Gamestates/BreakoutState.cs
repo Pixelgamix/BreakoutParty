@@ -26,9 +26,29 @@ namespace BreakoutParty.Gamestates
         public int Score = 0;
 
         /// <summary>
+        /// Lives.
+        /// </summary>
+        public int Lives = 4;
+
+        /// <summary>
+        /// Level.
+        /// </summary>
+        public int Level = 0;
+
+        /// <summary>
         /// Position of score display.
         /// </summary>
-        private static Vector2 _ScorePosition = new Vector2(245, 1);
+        private static Vector2 _ScorePosition = new Vector2(242, 1);
+
+        /// <summary>
+        /// Position of live display.
+        /// </summary>
+        private static Vector2 _LivesPosition = new Vector2(4, 1);
+
+        /// <summary>
+        /// Position of level display.
+        /// </summary>
+        private static Vector2 _LevelPosition = new Vector2(130, 1);
 
         /// <summary>
         /// The <see cref="_Playground"/>.
@@ -56,9 +76,10 @@ namespace BreakoutParty.Gamestates
 
             _Batch = Manager.Game.Batch;
 
-            SpawnBall();
             SpawnPaddles();
-            SpawnBlocks();
+
+            // Start next level
+            StartNextLevel();
         }
 
         /// <summary>
@@ -79,6 +100,19 @@ namespace BreakoutParty.Gamestates
             _Playground.Update(gameTime);
 
             UpdateBalls();
+
+            // Next level if no Blocks are left
+            if(_Playground.GetEntities<Block>().Count() == 0)
+            {
+                StartNextLevel();
+            }
+
+            // End game if player ran out of lives or pressed abort
+            if (Lives == 0 || InputManager.IsActionPressed(PlayerIndex.One, InputActions.Abort))
+            {
+                Manager.Remove(this);
+                Manager.Add(new MainMenuGamestate());
+            }
         }
 
         /// <summary>
@@ -96,9 +130,21 @@ namespace BreakoutParty.Gamestates
 
             _Playground.Draw(gameTime);
 
-            // Draw status
+            // Draw level
             _Batch.DrawString(_Statsfont,
-                Score.ToString().PadLeft(6, '0') + " Score",
+                "Lives: " + Lives.ToString().PadLeft(2, '0'),
+                _LivesPosition,
+                Color.White);
+
+            // Draw level
+            _Batch.DrawString(_Statsfont,
+                "Level: " + Level.ToString().PadLeft(2, '0'),
+                _LevelPosition,
+                Color.White);
+
+            // Draw score
+            _Batch.DrawString(_Statsfont,
+                "Score: " + Score.ToString().PadLeft(6, '0'),
                 _ScorePosition,
                 Color.White);
 
@@ -107,22 +153,36 @@ namespace BreakoutParty.Gamestates
         }
 
         /// <summary>
+        /// Starts the next level.
+        /// </summary>
+        public void StartNextLevel()
+        {
+            Level++;
+            Lives++;
+            SpawnBall();
+            SpawnBlocks();
+        }
+
+        /// <summary>
         /// Spawns a new <see cref="Ball"/>.
         /// </summary>
         public void SpawnBall()
         {
-            // Spawn ball in the middle of the screen
+            // Spawn ball north of first player
+            Paddle firstPaddle = _Playground.GetEntities<Paddle>()
+                .Where((x)=> x.Player == PlayerIndex.One)
+                .First();
             Ball ball = new Ball();
             _Playground.Add(ball);
             ball.PhysicsBody.SetTransform(
-                new Vector2(160f, 210f) * BreakoutPartyGame.MeterPerPixel,
+                new Vector2(firstPaddle.PhysicsBody.Position.X, 210f * BreakoutPartyGame.MeterPerPixel),
                 0f);
 
             Vector2 velocity =  new Vector2(
                 (float)BreakoutPartyGame.Random.NextDouble() - 0.5f,
                 -0.8f);
             velocity.Normalize();
-            ball.PhysicsBody.LinearVelocity = velocity * 2.5f;
+            ball.PhysicsBody.LinearVelocity = velocity * ball.Speed;
 
             _Balls.Add(ball);
         }
@@ -152,7 +212,7 @@ namespace BreakoutParty.Gamestates
                     case PlayerIndex.Two:
                         paddle.PhysicsBody.Position = new Vector2(
                             160 * BreakoutPartyGame.MeterPerPixel,
-                            10 * BreakoutPartyGame.MeterPerPixel);
+                            15 * BreakoutPartyGame.MeterPerPixel);
                         paddle.PhysicsBody.Rotation = MathHelper.ToRadians(180f);
                         break;
                     case PlayerIndex.Three:
@@ -180,7 +240,11 @@ namespace BreakoutParty.Gamestates
             {
                 for(int y = 0; y < 5; y++)
                 {
-                    Block block = new Block(BreakoutPartyGame.Random.Next(1, 4));
+                    // Leave random spots empty
+                    if (BreakoutPartyGame.Random.NextDouble() > 0.9)
+                        continue;
+
+                    Block block = new Block(BreakoutPartyGame.Random.Next(1, 1 + (int)(Level * 0.75f)));
                     _Playground.Add(block);
                     block.PhysicsBody.Position = new Vector2(
                         (80 + x * Block.Width) * BreakoutPartyGame.MeterPerPixel,
@@ -195,6 +259,12 @@ namespace BreakoutParty.Gamestates
         /// </summary>
         private void UpdateBalls()
         {
+            if(_Balls.Count == 0)
+            {
+                Lives--;
+                SpawnBall();
+            }
+
             for (int i = _Balls.Count - 1; i >= 0; i--)
             {
                 var ball = _Balls[i];
@@ -207,7 +277,6 @@ namespace BreakoutParty.Gamestates
                 {
                     _Playground.Remove(ball);
                     _Balls.Remove(ball);
-                    SpawnBall();
                 }
             }
         }
