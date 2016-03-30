@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -34,6 +35,11 @@ namespace BreakoutParty.Entities
         private Texture2D _PaddleTexture;
 
         /// <summary>
+        /// Sound for hits against the paddle.
+        /// </summary>
+        private SoundEffect _PaddleHitSound;
+
+        /// <summary>
         /// Paddle origin.
         /// </summary>
         private Vector2 _Origin;
@@ -55,6 +61,7 @@ namespace BreakoutParty.Entities
             _Batch = game.Batch;
 
             _PaddleTexture = game.Content.Load<Texture2D>("Paddle");
+            _PaddleHitSound = game.Content.Load<SoundEffect>("PaddleHit");
 
             _Origin = new Vector2(_PaddleTexture.Width * 0.5f, _PaddleTexture.Height * 0.5f);
 
@@ -73,6 +80,7 @@ namespace BreakoutParty.Entities
             PhysicsBody.IgnoreGravity = true;
             PhysicsBody.CollisionCategories = CollisionGroups.Paddle;
             PhysicsBody.CollidesWith = CollisionGroups.Ball;
+            PhysicsBody.OnCollision += PhysicsBody_OnCollision;
             MakePhysicsBodyBouncy();
         }
 
@@ -85,6 +93,7 @@ namespace BreakoutParty.Entities
             _PaddleTexture = null;
 
             Playground.World.RemoveBody(PhysicsBody);
+            PhysicsBody.OnCollision -= PhysicsBody_OnCollision;
             PhysicsBody.UserData = null;
             PhysicsBody = null;
         }
@@ -189,6 +198,19 @@ namespace BreakoutParty.Entities
                 }
                 PhysicsBody.LinearVelocity = velocity;
             }
+        }
+
+        /// <summary>
+        /// Handles collisions with this <see cref="Paddle"/>.
+        /// </summary>
+        /// <param name="fixtureA"></param>
+        /// <param name="fixtureB"></param>
+        /// <param name="contact"></param>
+        /// <returns></returns>
+        private bool PhysicsBody_OnCollision(FarseerPhysics.Dynamics.Fixture fixtureA, FarseerPhysics.Dynamics.Fixture fixtureB, FarseerPhysics.Dynamics.Contacts.Contact contact)
+        {
+            _PaddleHitSound.Play();
+            return true;
         }
     }
 }

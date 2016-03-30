@@ -1,6 +1,7 @@
 ﻿using BreakoutParty.Entities;
 using BreakoutParty.Font;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -34,6 +35,21 @@ namespace BreakoutParty.Gamestates
         /// Level.
         /// </summary>
         public int Level = 0;
+
+        /// <summary>
+        /// Sound for when a ball is lost.
+        /// </summary>
+        private SoundEffect _BallLostSound;
+
+        /// <summary>
+        /// Sound for level up.
+        /// </summary>
+        private SoundEffect _LevelUpSound;
+
+        /// <summary>
+        /// Sound for game over.
+        /// </summary>
+        private SoundEffect _GameOver;
 
         /// <summary>
         /// Position of score display.
@@ -73,6 +89,9 @@ namespace BreakoutParty.Gamestates
             _Playground = new Playground(this);
 
             _Statsfont = Manager.Game.Content.LoadBitmapFont("Font");
+            _BallLostSound = Manager.Game.Content.Load<SoundEffect>("BallLost");
+            _LevelUpSound = Manager.Game.Content.Load<SoundEffect>("LevelUp");
+            _GameOver = Manager.Game.Content.Load<SoundEffect>("GameOver");
 
             _Batch = Manager.Game.Batch;
 
@@ -110,6 +129,7 @@ namespace BreakoutParty.Gamestates
             // End game if player ran out of lives or pressed abort
             if (Lives == 0 || InputManager.IsActionPressed(PlayerIndex.One, InputActions.Abort))
             {
+                _GameOver.Play();
                 Manager.Remove(this);
                 Manager.Add(new MainMenuGamestate());
             }
@@ -157,6 +177,7 @@ namespace BreakoutParty.Gamestates
         /// </summary>
         public void StartNextLevel()
         {
+            _LevelUpSound.Play();
             Level++;
             Lives++;
             SpawnBall();
@@ -275,6 +296,7 @@ namespace BreakoutParty.Gamestates
                     || physicsBody.Position.Y < 0f
                     || physicsBody.Position.Y > 240 * BreakoutPartyGame.MeterPerPixel)
                 {
+                    _BallLostSound.Play();
                     _Playground.Remove(ball);
                     _Balls.Remove(ball);
                 }

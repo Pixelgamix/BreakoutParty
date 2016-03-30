@@ -7,6 +7,18 @@ Michael "Avoider" Jaensch
 [Graphics]
 Pascal Richter
 
+[Sounds]
+Sounds from freesound.org
+MenuSelect by broumbroum
+MenuValidate by broumbroum
+MenuBack by bbroumbroum
+PaddleHit by jorickhoofd
+BlockHit by thomasjaunism
+BlockDestroy by jorickhoofd
+BallLost by suntemple
+LevelUp by rhodesmas
+GameOver by SoundEffectsPodcast_com
+
 [3rd Party Libraries]
 Farseer Physics Engine by Ian "genbox" Qvist
 FNA by Ethan "flibitijibibo" Lee

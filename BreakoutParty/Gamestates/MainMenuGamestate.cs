@@ -1,5 +1,6 @@
 ﻿using BreakoutParty.Font;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -15,6 +16,16 @@ namespace BreakoutParty.Gamestates
         /// BreakoutParty logo.
         /// </summary>
         private Texture2D _LogoTexture;
+
+        /// <summary>
+        /// Sound for selecting a menu item
+        /// </summary>
+        private SoundEffect _MenuSelectSound;
+
+        /// <summary>
+        /// Sound for validating a menu item.
+        /// </summary>
+        private SoundEffect _MenuValidateSound;
 
         /// <summary>
         /// <see cref="BitmapFont"/> for drawing the menu entries.
@@ -51,6 +62,8 @@ namespace BreakoutParty.Gamestates
         public override void Initialize()
         {
             ContentManager content = Manager.Game.Content;
+            _MenuSelectSound = content.Load<SoundEffect>("MenuSelect");
+            _MenuValidateSound = content.Load<SoundEffect>("MenuValidate");
             _LogoTexture = content.Load<Texture2D>("Title");
             _MenuFont = content.LoadBitmapFont("Font");
             _Batch = Manager.Game.Batch;
@@ -74,14 +87,21 @@ namespace BreakoutParty.Gamestates
         public override void Update(GameTime gameTime)
         {
             if (InputManager.IsActionPressed(PlayerIndex.One, InputActions.Up) && _SelectedMenuEntry > 0)
+            {
                 _SelectedMenuEntry--;
+                _MenuSelectSound.Play();
+            }
 
             else if (InputManager.IsActionPressed(PlayerIndex.One, InputActions.Down) && _SelectedMenuEntry < _MenuEntries.Length - 1)
+            {
                 _SelectedMenuEntry++;
+                _MenuSelectSound.Play();
+            }
 
             else if (InputManager.IsActionPressed(PlayerIndex.One, InputActions.Ok))
             {
-                switch(_SelectedMenuEntry)
+                _MenuValidateSound.Play();
+                switch (_SelectedMenuEntry)
                 {
                     case 0: // Start Local Game
                         Manager.Remove(this);

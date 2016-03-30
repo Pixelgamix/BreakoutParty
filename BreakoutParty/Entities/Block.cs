@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -37,6 +38,16 @@ namespace BreakoutParty.Entities
         /// Block current health.
         /// </summary>
         public int Health;
+
+        /// <summary>
+        /// Sound for block hits.
+        /// </summary>
+        private SoundEffect _BlockHitSound;
+
+        /// <summary>
+        /// Sound for block destruction.
+        /// </summary>
+        private SoundEffect _BlockDestroySound;
 
         /// <summary>
         /// Colors to randomly choose the tint from.
@@ -91,6 +102,8 @@ namespace BreakoutParty.Entities
             _Batch = game.Batch;
 
             _BlockTexture = game.Content.Load<Texture2D>("Block");
+            _BlockHitSound = game.Content.Load<SoundEffect>("BlockHit");
+            _BlockDestroySound = game.Content.Load<SoundEffect>("BlockDestroy");
 
             _Origin = new Vector2(Width * 0.5f, Height * 0.5f);
 
@@ -187,8 +200,11 @@ namespace BreakoutParty.Entities
             {
                 Health--;
             }
-            if (Health == 0)
+            if (Health > 0)
+                _BlockHitSound.Play();
+            else
             {
+                _BlockDestroySound.Play();
                 var state = Playground.State as Gamestates.BreakoutState;
                 state.Score++;
 
