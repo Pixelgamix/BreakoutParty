@@ -1,6 +1,6 @@
 ﻿using BreakoutParty.Font;
+using BreakoutParty.Sounds;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -16,16 +16,6 @@ namespace BreakoutParty.Gamestates
         /// BreakoutParty logo.
         /// </summary>
         private Texture2D _LogoTexture;
-
-        /// <summary>
-        /// Sound for selecting a menu item
-        /// </summary>
-        private SoundEffect _MenuSelectSound;
-
-        /// <summary>
-        /// Sound for validating a menu item.
-        /// </summary>
-        private SoundEffect _MenuValidateSound;
 
         /// <summary>
         /// <see cref="BitmapFont"/> for drawing the menu entries.
@@ -62,14 +52,14 @@ namespace BreakoutParty.Gamestates
         public override void Initialize()
         {
             ContentManager content = Manager.Game.Content;
-            _MenuSelectSound = content.Load<SoundEffect>("MenuSelect");
-            _MenuValidateSound = content.Load<SoundEffect>("MenuValidate");
             _LogoTexture = content.Load<Texture2D>("Title");
             _MenuFont = content.LoadBitmapFont("Font");
             _Batch = Manager.Game.Batch;
 
             var version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
             _Version = "V" + version.Major + "." + version.Minor;
+
+            Manager.Game.AudioManager.Play(MusicTracks.TitleMusic);
         }
 
         /// <summary>
@@ -89,18 +79,18 @@ namespace BreakoutParty.Gamestates
             if (InputManager.IsActionPressed(PlayerIndex.One, InputActions.Up) && _SelectedMenuEntry > 0)
             {
                 _SelectedMenuEntry--;
-                _MenuSelectSound.Play();
+                Manager.Game.AudioManager.Play(SoundEffects.MenuSelect);
             }
 
             else if (InputManager.IsActionPressed(PlayerIndex.One, InputActions.Down) && _SelectedMenuEntry < _MenuEntries.Length - 1)
             {
                 _SelectedMenuEntry++;
-                _MenuSelectSound.Play();
+                Manager.Game.AudioManager.Play(SoundEffects.MenuSelect);
             }
 
             else if (InputManager.IsActionPressed(PlayerIndex.One, InputActions.Ok))
             {
-                _MenuValidateSound.Play();
+                Manager.Game.AudioManager.Play(SoundEffects.MenuValidate);
                 switch (_SelectedMenuEntry)
                 {
                     case 0: // Start Local Game

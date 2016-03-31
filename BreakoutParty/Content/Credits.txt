@@ -19,6 +19,21 @@ BallLost by suntemple
 LevelUp by rhodesmas
 GameOver by SoundEffectsPodcast_com
 
+[Music]
+Music from incompetech.com
+
+TitleMusic aka "Anamalie"
+Kevin MacLeod (incompetech.com)
+Licensed under Creative Commons:
+By Attribution 3.0 License
+http://creativecommons.org/licenses/by/3.0/
+
+AmbientMusic aka "Cipher"
+Kevin MacLeod (incompetech.com)
+Licensed under Creative Commons:
+By Attribution 3.0 License
+http://creativecommons.org/licenses/by/3.0/
+
 [3rd Party Libraries]
 Farseer Physics Engine by Ian "genbox" Qvist
 FNA by Ethan "flibitijibibo" Lee

@@ -1,4 +1,5 @@
 ﻿using BreakoutParty.Gamestates;
+using BreakoutParty.Sounds;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -44,6 +45,11 @@ namespace BreakoutParty
         /// The <see cref="GamestateManager"/>.
         /// </summary>
         public GamestateManager GameManager;
+        
+        /// <summary>
+        /// The <see cref="SoundManager"/>.
+        /// </summary>
+        public SoundManager AudioManager;
 
         /// <summary>
         /// The <see cref="RenderTarget2D"/> the game gets drawn into. After
@@ -74,6 +80,7 @@ namespace BreakoutParty
             base.Initialize();
 
             Batch = new SpriteBatch(Graphics.GraphicsDevice);
+            AudioManager = new SoundManager(this);
             GameManager = new GamestateManager(this);
             GameManager.Add(new MainMenuGamestate());
         }

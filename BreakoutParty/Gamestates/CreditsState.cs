@@ -1,4 +1,5 @@
 ﻿using BreakoutParty.Font;
+using BreakoutParty.Sounds;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
@@ -19,11 +20,6 @@ namespace BreakoutParty.Gamestates
         /// Credits text.
         /// </summary>
         private static string[] _Credits;
-
-        /// <summary>
-        /// Sound for going back in a menu.
-        /// </summary>
-        private SoundEffect _MenuBackSound;
 
         /// <summary>
         /// <see cref="SpriteBatch"/> for drawing.
@@ -53,7 +49,6 @@ namespace BreakoutParty.Gamestates
             _TextFont = Manager.Game.Content.LoadBitmapFont("Font");
             _TitleFont = Manager.Game.Content.LoadBitmapFont("TitleFont");
             _Batch = Manager.Game.Batch;
-            _MenuBackSound = Manager.Game.Content.Load<SoundEffect>("MenuBack");
 
             if(_Credits == null)
             {
@@ -81,7 +76,7 @@ namespace BreakoutParty.Gamestates
                 || InputManager.IsActionPressed(PlayerIndex.One, InputActions.Ok)
                 || InputManager.IsActionPressed(PlayerIndex.One, InputActions.Abort))
             {
-                _MenuBackSound.Play();
+                Manager.Game.AudioManager.Play(SoundEffects.MenuBack);
                 Manager.Remove(this);
                 Manager.Add(new MainMenuGamestate());
             }
