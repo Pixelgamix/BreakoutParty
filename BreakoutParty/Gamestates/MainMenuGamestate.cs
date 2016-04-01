@@ -32,6 +32,7 @@ namespace BreakoutParty.Gamestates
         /// </summary>
         private static readonly string[] _MenuEntries = {
             "Start Local Game",
+            "Options",
             "Watch Credits",
             "End Game"
         };
@@ -98,12 +99,17 @@ namespace BreakoutParty.Gamestates
                         Manager.Add(new BreakoutState());
                         break;
 
-                    case 1: // Credits
+                    case 1: // Options
+                        Manager.Remove(this);
+                        Manager.Add(new OptionsState());
+                        break;
+
+                    case 2: // Credits
                         Manager.Remove(this);
                         Manager.Add(new CreditsState());
                         break;
 
-                    case 2: // Exit
+                    case 3: // Exit
                         Manager.Remove(this);
                         break;
                 }

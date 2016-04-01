@@ -31,6 +31,8 @@ namespace BreakoutParty.Sounds
         public SoundManager(BreakoutPartyGame game)
         {
             _Game = game;
+            SoundEffect.MasterVolume = game.Data.SoundVolume;
+            MediaPlayer.Volume = game.Data.MusicVolume;
         }
 
         /// <summary>
