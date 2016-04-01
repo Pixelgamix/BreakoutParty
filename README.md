@@ -5,6 +5,7 @@ A simple pixel art style breakout clone made by [Pixelgamix](https://github.com/
 BreakoutParty is in very early development stages. Weirdness, bugs and even crashes are to be expected. Since the source code changes frequently it does not make much sense to contribute at the moment. Feel free to fork and play around, but we most likely won't accept pull requests until the game is much more stable and feature complete.
 
 ## System requirements
+* .NET Framework 4.5.2
 * For development: Windows 7 and Visual Studio 2015 Community Edition
 * For playing: Graphics card with basic shader support, Windows, Linux or Mac (Linux and Mac being untested)
 
