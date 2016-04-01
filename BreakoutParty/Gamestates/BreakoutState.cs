@@ -115,7 +115,7 @@ namespace BreakoutParty.Gamestates
             {
                 Manager.Game.AudioManager.Play(SoundEffects.GameOver);
                 Manager.Remove(this);
-                Manager.Add(new MainMenuGamestate());
+                Manager.Add(new HighscoreState(Level, Score));
             }
         }
 

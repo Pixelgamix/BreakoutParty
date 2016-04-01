@@ -1,4 +1,5 @@
-﻿using BreakoutParty.Gamestates;
+﻿using BreakoutParty.Data;
+using BreakoutParty.Gamestates;
 using BreakoutParty.Sounds;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -42,6 +43,11 @@ namespace BreakoutParty
         public GraphicsDeviceManager Graphics;
 
         /// <summary>
+        /// The <see cref="Gamedata"/>.
+        /// </summary>
+        public Gamedata Data;
+
+        /// <summary>
         /// The <see cref="GamestateManager"/>.
         /// </summary>
         public GamestateManager GameManager;
@@ -79,6 +85,8 @@ namespace BreakoutParty
         {
             base.Initialize();
 
+            Data = Gamedata.Load();
+
             Batch = new SpriteBatch(Graphics.GraphicsDevice);
             AudioManager = new SoundManager(this);
             GameManager = new GamestateManager(this);
@@ -103,6 +111,16 @@ namespace BreakoutParty
                 RenderTargetUsage.DiscardContents);
 
             _Background = Content.Load<Texture2D>("Background");
+        }
+
+        /// <summary>
+        /// Saves <see cref="Gamedata"/>.
+        /// </summary>
+        protected override void UnloadContent()
+        {
+            base.UnloadContent();
+
+            Data.Save();
         }
 
         /// <summary>
