@@ -35,6 +35,9 @@
   <PropertyGroup>
     <StartupObject />
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>BreakoutParty.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="FarseerPhysicsFna, Version=3.5.0.30373, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
@@ -106,6 +109,10 @@
   <ItemGroup>
     <Content Include="3rdParty\FarseerPhysicsFna.dll" />
     <Content Include="3rdParty\FNA.dll" />
+    <Content Include="BreakoutParty.ico" />
+    <Content Include="BreakoutParty.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Background.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
