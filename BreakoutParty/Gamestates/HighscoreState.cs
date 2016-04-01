@@ -172,6 +172,9 @@ namespace BreakoutParty.Gamestates
                 DepthStencilState.None,
                 RasterizerState.CullNone);
 
+            float f = 0.7f + 0.3f * (float)Math.Cos(gameTime.TotalGameTime.TotalSeconds * 10);
+            Color selectedColor = new Color(f, f, f);
+
             // Draw title
             _Batch.DrawString(_TitleFont,
                 "Highscores",
@@ -230,7 +233,7 @@ namespace BreakoutParty.Gamestates
                         _Batch.DrawString(_TextFont,
                         highscore.Name[c].ToString(),
                         new Vector2(40 + c * 8, i * 20f + 60f),
-                        _CurrentLetter == c ? Color.White : Color.Gray);
+                        _CurrentLetter == c ? selectedColor : Color.White);
                     }
                 }
 

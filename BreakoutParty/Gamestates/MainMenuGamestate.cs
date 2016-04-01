@@ -33,6 +33,7 @@ namespace BreakoutParty.Gamestates
         private static readonly string[] _MenuEntries = {
             "Start Local Game",
             "Options",
+            "Highscores",
             "Watch Credits",
             "End Game"
         };
@@ -104,12 +105,17 @@ namespace BreakoutParty.Gamestates
                         Manager.Add(new OptionsState());
                         break;
 
-                    case 2: // Credits
+                    case 2: // Highscores
+                        Manager.Remove(this);
+                        Manager.Add(new HighscoreState(0, 0));
+                        break;
+
+                    case 3: // Credits
                         Manager.Remove(this);
                         Manager.Add(new CreditsState());
                         break;
 
-                    case 3: // Exit
+                    case 4: // Exit
                         Manager.Remove(this);
                         break;
                 }
@@ -156,7 +162,7 @@ namespace BreakoutParty.Gamestates
                     _MenuEntries[i],
                     new Vector2(
                         160 - _MenuFont.MeasureFont(_MenuEntries[i]).X * 0.5f,
-                        160 + i * 16),
+                        140 + i * 16),
                     color);
             }
 

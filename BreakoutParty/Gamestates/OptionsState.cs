@@ -130,20 +130,23 @@ namespace BreakoutParty.Gamestates
             _Batch.DrawString(
                 _TitleFont,
                 "Options",
-                new Vector2(130, 10),
+                new Vector2(130, 70),
                 Color.White);
+
+            float f = 0.7f + 0.3f * (float)Math.Cos(gameTime.TotalGameTime.TotalSeconds * 10);
+            Color selectedColor = new Color(f, f, f);
 
             _Batch.DrawString(
                 _TextFont,
                 "Sound Volume: " + SoundEffect.MasterVolume.ToString("P"),
-                new Vector2(110, 40),
-                _SelectedOption == 0 ? Color.White : Color.Gray);
+                new Vector2(110, 100),
+                _SelectedOption == 0 ? selectedColor : Color.White);
 
             _Batch.DrawString(
                 _TextFont,
                 "Music Volume: " + MediaPlayer.Volume.ToString("P"),
-                new Vector2(110, 70),
-                _SelectedOption == 1 ? Color.White : Color.Gray);
+                new Vector2(110, 120),
+                _SelectedOption == 1 ? selectedColor : Color.White);
 
             _Batch.End();
 

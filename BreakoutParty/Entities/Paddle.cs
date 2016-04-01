@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using BreakoutParty.Sounds;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -48,6 +49,16 @@ namespace BreakoutParty.Entities
         /// The <see cref="SpriteBatch"/> to draw with.
         /// </summary>
         private SpriteBatch _Batch;
+
+        /// <summary>
+        /// Colors for paddles.
+        /// </summary>
+        private static Color[] _PaddleColors = {
+            Color.White,
+            Color.Orange,
+            Color.LightGreen,
+            Color.CornflowerBlue
+        };
 
         /// <summary>
         /// Initializes the <see cref="Entity"/>. Is called once the entity
@@ -136,7 +147,7 @@ namespace BreakoutParty.Entities
                 _PaddleTexture,
                 PhysicsBody.Position * BreakoutPartyGame.PixelsPerMeter,
                 null,
-                Color.White,
+                _PaddleColors[(int)Player],
                 PhysicsBody.Rotation,
                 _Origin,
                 1f, // Scale
@@ -149,6 +160,14 @@ namespace BreakoutParty.Entities
         /// </summary>
         private void HandleUserInput()
         {
+            // Allow players (except for player 1) to dynamically leave
+            if(Player != PlayerIndex.One && InputManager.IsActionPressed(Player, InputActions.Abort))
+            {
+                Playground.State.Manager.Game.AudioManager.Play(SoundEffects.MenuValidate);
+                IsComputer = true;
+                return;
+            }
+
             float xd = InputManager.IsActionActive(Player, InputActions.Down) ? PaddleSpeed : 0;
             xd += InputManager.IsActionActive(Player, InputActions.Left) ? -PaddleSpeed : 0;
             xd += InputManager.IsActionActive(Player, InputActions.Right) ? PaddleSpeed : 0;
@@ -166,6 +185,14 @@ namespace BreakoutParty.Entities
         /// </summary>
         private void HandleComputer(GameTime gameTime)
         {
+            // Allow players to dynamically join in
+            if(InputManager.IsActionPressed(Player, InputActions.Ok))
+            {
+                Playground.State.Manager.Game.AudioManager.Play(SoundEffects.MenuValidate);
+                IsComputer = false;
+                return;
+            }
+
             Vector2 closestBall = Vector2.Zero;
             float closestDistance = float.MaxValue;
             foreach (Ball ball in Playground.GetEntities<Ball>())
