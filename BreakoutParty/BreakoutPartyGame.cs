@@ -88,7 +88,7 @@ namespace BreakoutParty
             Batch = new SpriteBatch(Graphics.GraphicsDevice);
             AudioManager = new SoundManager(this);
             GameManager = new GamestateManager(this);
-            GameManager.Add(new MainMenuGamestate());
+            GameManager.Add(new HowToPlayState());
         }
 
         /// <summary>

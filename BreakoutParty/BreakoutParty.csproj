@@ -76,6 +76,7 @@
     <Compile Include="Gamestates\Gamestate.cs" />
     <Compile Include="Gamestates\GamestateManager.cs" />
     <Compile Include="Gamestates\HighscoreState.cs" />
+    <Compile Include="Gamestates\HowToPlayState.cs" />
     <Compile Include="Gamestates\MainMenuGamestate.cs" />
     <Compile Include="Gamestates\OptionsState.cs" />
     <Compile Include="InputActions.cs" />
@@ -138,6 +139,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\GameOver.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\HowToPlay.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\LevelUp.wav">
