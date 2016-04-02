@@ -76,15 +76,13 @@ namespace BreakoutParty
         {
             Graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            Graphics.PreferredBackBufferWidth = 800;
-            Graphics.PreferredBackBufferHeight = 600;
-            
+            Graphics.PreferredBackBufferWidth = (int)(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width * 0.8f);
+            Graphics.PreferredBackBufferHeight = (int)(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height * 0.8f);
         }
 
         protected override void Initialize()
         {
             base.Initialize();
-
             Data = Gamedata.Load();
 
             Batch = new SpriteBatch(Graphics.GraphicsDevice);
